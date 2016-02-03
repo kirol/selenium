@@ -1,0 +1,2 @@
+Use equals de so sanh String. If use == for String, it means checking the actual contents of the string, the == operator checks whether the references to the objects are equal.
+Use == de so sanh so^'
