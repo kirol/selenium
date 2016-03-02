@@ -1,0 +1,4 @@
+Before you generate an SSH key, you can check to see if you have any existing SSH keys.
+
+Open Git bash https://git-for-windows.github.io/ and enter:
+https://help.github.com/articles/checking-for-existing-ssh-keys/
