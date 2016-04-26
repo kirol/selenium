@@ -1,0 +1,1 @@
+Khi co' popup hien len se focus den popup, do do' khong tim thay duoc element tren main web

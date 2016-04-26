@@ -1,0 +1,7 @@
+Run the test once
+Then navigate to test-output then open index.html using browser
+Click on testng-customsuite.xml link then copy its contents
+Create new file testng.xml then paste copied contents into testng.xml
+
+
+To run test suite using testng.xml => right click testng.xml then run using testng

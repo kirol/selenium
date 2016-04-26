@@ -1,0 +1,5 @@
+river.close and driver.quit are two different methods for closing the browser session in Selenium WebDriver. Understanding both of them and knowing when to use which method is important in your test execution. Therefore, in this article, we have tried to throw light on both these methods.
+
+driver.close – It closes the the browser window on which the focus is set.
+driver.quit – It basically calls driver.dispose method which in turn closes all the browser windows and ends the WebDriver session gracefully.
+You should use driver.quit whenever you want to end the program. It will close all opened browser window and terminates the WebDriver session. If you do not use driver.quit at the end of program, WebDriver session will not close properly and files would not be cleared off memory. This may result in memory leak errors.

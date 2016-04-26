@@ -1,0 +1,16 @@
+In case, can't locate web element after popup is displayed. Workaround: Wait for popup to disappear then refresh browser
+Thread.sleep(5000);
+driver.navigate().refresh();
+
+
+
+
+
+
+
+
+
+
+
+
+http://toolsqa.com/selenium-webdriver/switch-commands/
