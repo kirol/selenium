@@ -1,2 +1,0 @@
-http://biz30.timedoctor.com/git-mecurial-and-cvs-comparison-of-svn-software/
-Version control = software config management = scm
