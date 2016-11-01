@@ -1,0 +1,2 @@
+WebElement password = driver.findElement(By.xpath("html/body/center[3]/form/input[1]"));
+password.sendKeys('123');
