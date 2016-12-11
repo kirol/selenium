@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite guice-stage="DEVELOPMENT" name="Failed suite [Simple Calculator Library Happy Path Test]">
+  <test name="Test(failed)">
+    <classes>
+      <class name="testingforstaticAPIs.HappyPathTests">
+        <methods>
+          <include name="beforeMethod"/>
+          <include name="afterMethod"/>
+          <include name="maxAdd"/>
+        </methods>
+      </class> <!-- testingforstaticAPIs.HappyPathTests -->
+    </classes>
+  </test> <!-- Test(failed) -->
+</suite> <!-- Failed suite [Simple Calculator Library Happy Path Test] -->
