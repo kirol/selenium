@@ -1,0 +1,19 @@
+Web element 1:
+//form[@id='loginForm']
+css=form#loginForm
+
+Web element 2:
+//input[@name='username']
+css=input[name='username']
+
+Web element 3:
+//input[@name='password']
+css=input[name='password']
+
+Web element 4:
+//input[@value='Login']
+css=input[value='Login']
+
+Web element 5:
+//input[@value='Clear']
+css=input[value='Clear']
