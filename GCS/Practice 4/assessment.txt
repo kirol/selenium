@@ -1,0 +1,11 @@
+ Attached are the slide and my sample code (SeleniumWebDriverDemo) about WebDriver for reference.
+    For TestNG, please refer to my previous mail for slide and sample code.
+
+    As planed, we have 2 final assessments. Please see the details in the attached slide and let me know if you have any questions about the Calculator page and VirtueMart page used for testing.
+    You will have one week to finish assessment 1 (deadline: 23/12) and the other 2 weeks to finish assessment 2 (deadline: 6/1). You can use my Sample project SeleniumWebDriverDemo to do assessments.
+
+    The browser driver is too large, so I do not include in my sample project. Please download it by yourself. When you finish your assessment, please zip all the project (without browser drivers) and send to me for review.
+
+    We also have a Wiki page for discussing about Selenium, TestNG and WebDriver:
+        https://gcsjira.cybersoft-vn.com/wiki/pages/viewpage.action?title=Selenium_Dec+2016_Jan+2017&spaceKey=TS
+    I and a. Khanh will try to answer all of your questions relating to Selenium, TestNG, MSUnitTest and WebDriver (CSharp and Java client).
