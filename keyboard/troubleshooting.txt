@@ -1,0 +1,9 @@
+Sometimes, combobox's element can not be selected, you can use Actions to do it instead
+
+WebElement webElement = driver.findElement(By.xpath(prop.getProperty("cowboyhat_size_select")));
+	  
+	  Actions actions = new Actions(driver);
+	  actions.moveToElement(webElement);
+	  actions.click();
+	  actions.sendKeys(Keys.ARROW_DOWN);
+	  actions.build().perform();

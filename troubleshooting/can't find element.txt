@@ -1,0 +1,5 @@
+Can't find element, but testng still results passed. Maybe there are two elements with the same identification (one of them is the element with display:none) . You can use Firefox and then input element's identification (id, name,...) to find them.
+
+
+
+//*[text()="Cowboy Hat" and not(ancestor::div[contains(@style,'display:none')]) and not(ancestor::div[contains(@style,'display: none')])]
