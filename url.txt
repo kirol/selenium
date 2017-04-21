@@ -1,0 +1,122 @@
+https://www.e-access.att.com/pkmslogin.form
+
+
+/**
+ * @author Thanh Tran
+ *
+ */
+
+package testing;
+
+import org.testng.annotations.Test;
+
+import testing.DataDrivenTest.calculator;
+
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.remote.server.handler.SendKeys;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.AfterMethod;
+
+public class VirtueMartTest {
+	WebDriver driver;
+	WebDriverWait _wait;
+
+	@Test
+	public void happyPathTest() {
+		driver.get("https://www.e-access.att.com/pkmslogin.form");	
+		//TODO: Continue your test case developing here
+		InputStream XlsxFileToRead = null;
+		XSSFWorkbook workbook = null;
+		try {
+			XlsxFileToRead = new FileInputStream("TestData/Timesheet.xlsx");
+			
+			//Getting the workbook instance for xlsx file
+			workbook = new XSSFWorkbook(XlsxFileToRead);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		//getting the first sheet from the workbook using sheet name. 
+		// We can also pass the index of the sheet which starts from '0'.
+		XSSFSheet sheet = workbook.getSheet("Sheet2");
+		XSSFRow row;
+		XSSFCell cell;
+		
+		//Iterating all the rows in the sheet
+		Iterator rows = sheet.rowIterator();
+
+		while (rows.hasNext()) {
+			row = (XSSFRow) rows.next();
+			
+			//Iterating all the cells of the current row
+			Iterator cells = row.cellIterator();
+
+			while (cells.hasNext()) {
+				cell = (XSSFCell) cells.next();
+				/*System.out.println(cell.getColumnIndex());*/
+				if(cell.getColumnIndex() == 3){
+				if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
+					System.out.print(cell.getStringCellValue() + " ");
+					WebElement user = driver.findElement(By.xpath("html/body/form[1]/table[3]/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[1]/td/input"));
+					user.sendKeys(cell.getStringCellValue());
+					
+				} else if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
+					System.out.print(cell.getNumericCellValue() + " ");
+				} else if (cell.getCellType() == XSSFCell.CELL_TYPE_BOOLEAN) {
+					System.out.print(cell.getBooleanCellValue() + " ");
+
+				} else { 
+				}
+				}
+			}
+			System.out.println();
+			try {
+				XlsxFileToRead.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@BeforeMethod
+	public void beforeMethod() {
+		System.setProperty("webdriver.chrome.driver", "browserDrivers/Chrome/chromedriver.exe");
+		driver = new ChromeDriver();
+
+	}
+
+	@AfterMethod
+	public void afterMethod() {
+		/*driver.close();
+		driver.quit();*/
+	}
+
+
+
+}

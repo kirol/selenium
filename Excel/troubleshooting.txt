@@ -1,0 +1,9 @@
+NoClassDefFoundError: org/apache/poi/UnsupportedFileFormatException
+NoClassDefFoundError: UnsupportedFileFormatException while working with excel sheet using java
+
+This is covered in the Apache POI FAQ page:
+Can I mix POI jars from different versions?
+No. This is not supported.
+All POI jars in use must come from the same version. A combination such as poi-3.11.jar and poi-ooxml-3.9.jar is not supported, and will fail to work in unpredictable ways.
+You list yourself as using poi-3.9.jar and poi-ooxml-3.11.jar which are from different versions, and won't work.
+You need to ensure that all your POI jars come from the same version. I'd suggest you grab the latest POI release from the download page (3.12 as of writing), and use a consistent set of jars from that
