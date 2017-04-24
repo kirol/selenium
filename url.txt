@@ -1,6 +1,3 @@
-https://www.e-access.att.com/pkmslogin.form
-
-
 /**
  * @author Thanh Tran
  *
@@ -10,11 +7,13 @@ package testing;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
+import org.openqa.selenium.TakesScreenshot;
+import org.apache.commons.io.FileUtils;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -24,12 +23,15 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
@@ -40,27 +42,52 @@ import testing.DataDrivenTest.calculator;
 public class DataDrivenTest2 {
 	WebDriver driver;
 
-	/*@Test(dataProvider="calculatorTestData")
+	@Test(dataProvider="calculatorTestData")
 	public void testSimpleCalculator(testing.DataDrivenTest2.calculator calc) {
-		driver.get("http://tranminhthanh.info/training/selenium/SimpleCalculator/");
-
-	}*/
+		driver.get("https://www.e-access.att.com/mobilecmpm/cmpm/");
+		WebElement username = driver.findElement(By.xpath("html/body/form[1]/table[3]/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[1]/td/input"));
+		username.sendKeys(calc.username);
+		WebElement password = driver.findElement(By.xpath("html/body/form[1]/table[3]/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[3]/td/input"));
+		password.sendKeys(calc.password);
+		WebElement submitBtn = driver.findElement(By.xpath("html/body/form[1]/table[3]/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[5]/td/input"));
+		submitBtn.click();
+		WebElement okBtn = driver.findElement(By.xpath(".//*[@id='srv_successok']/input"));
+		okBtn.click();
+		WebElement webstr = driver.findElement(By.xpath("html/body/div/div/div/div[1]"));
+		webstr.click();
+		WebElement enterTime = driver.findElement(By.xpath("html/body/div/div/div/div/span[1]"));
+		enterTime.click();
+		
+		
+	}
 
 	/* Just for checking data provider.... */
-	@Test(dataProvider = "calculatorTestData")
+	/*@Test(dataProvider = "calculatorTestData")
 	public void checkTestData(testing.DataDrivenTest2.calculator calc) {
 		System.out.println("no1: " + calc.username);
 		System.out.println("no2: " + calc.password);
 	}
-
+*/
 
 
 	@BeforeMethod
 	public void setUp() {
-		/*System.setProperty("webdriver.chrome.driver", "browserDrivers/Chrome/chromedriver.exe");
-		 driver = new ChromeDriver();*/
+		System.setProperty("webdriver.chrome.driver", "browserDrivers/Chrome/chromedriver.exe");
+		 driver = new ChromeDriver();
 	}
 
+	@AfterMethod
+	public void takeScreenShotOnFailure(ITestResult testResult) throws IOException {
+		if (testResult.getStatus() == ITestResult.FAILURE) {
+			System.out.println(testResult.getStatus());
+			File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+			FileUtils.copyFile(scrFile, new File("TestData/testScreenShot.jpg"));
+		
+	   }    
+		driver.close();
+		driver.quit();
+	}
+	/*
 	@AfterMethod
 	public void tearDown() {
 		try {
@@ -69,9 +96,9 @@ public class DataDrivenTest2 {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		/*driver.close();
-		driver.quit();*/
-	}
+		driver.close();
+		driver.quit();
+	}*/
 
 	@DataProvider(name = "calculatorTestData")
 	public Object[][] calculatorData() {
@@ -196,7 +223,7 @@ public class DataDrivenTest2 {
 
 					__count++;
 					
-					System.out.println(username);
+					
 				}
 				testing.DataDrivenTest2.calculator _tmpCalc = new calculator(username, password, n01,  n02,  n03,  n04,  n05,  e01,  e02,  n06,  n07,  n08,  n09,  n10,  e03,  e04,  n11,  n12,  n13,  n14,  n15,  e05,  e06);
 				
