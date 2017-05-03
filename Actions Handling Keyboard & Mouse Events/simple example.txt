@@ -1,0 +1,7 @@
+WebElement webElement1 = ifindElement("cowboyhat_size_select");
+	  Actions actions = new Actions(driver);
+	  actions.moveToElement(webElement1);
+	  actions.click();
+	  actions.sendKeys("Size: XL");
+	  actions.sendKeys(Keys.ENTER);
+	  actions.build().perform();

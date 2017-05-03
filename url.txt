@@ -27,6 +27,7 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -62,7 +63,7 @@ public class DataDrivenTest2 {
 		list.add(calc.n14);
 		list.add(calc.n15);
 		/*System.out.println("List of: " + list);*/
-		
+
 		ctx.getCurrentXmlTest().addParameter("param1", calc.username);
 		driver.get("https://www.e-access.att.com/mobilecmpm/cmpm/");
 		WebElement username = driver.findElement(By.xpath("html/body/form[1]/table[3]/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[1]/td/input"));
@@ -81,20 +82,45 @@ public class DataDrivenTest2 {
 		for(WebElement workItem : workItems){
 			System.out.println("This is the workItem: " + workItem.getAttribute("title"));
 			driver.findElements(By.xpath("//*[@class='ng-scope ng-isolate-scope']/child::td[@class='webstr-time-rwd-table-cell-pmt webstr-time-rwd-table-auto-width-cell']"));
+			int counter = 0;
 			for(String i : list){
 				if(i.equals(workItem.getAttribute("title"))){
 					System.out.println("OKOKOK");
+					driver.findElement(By.xpath("//*[@title='Toggle inline editing']")).click();
+					counter+=1;
+					
 				}else if(i.equals("0")){
 					System.out.println("Do nothing");
+					counter+=1;
 				}
 				else{
 					System.out.println("NONONO");
-					/*driver.get("https://www.e-access.att.com/mobilecmpm/cmpm/#/time/wi_search");*/
-					driver.
+					try{
+					Actions actions = new Actions(driver);
+					actions.moveToElement(driver.findElement(By.xpath("//*[@class='cmpm-icon-menu-icon']")));
+					actions.click();
+					actions.moveToElement(driver.findElement(By.xpath("//*[text()='Add Work Item']")));
+					actions.click();
+					actions.build().perform();
+					}catch(org.openqa.selenium.StaleElementReferenceException e){
+						
+					}
+					driver.findElement(By.xpath("//*[@class='ng-pristine ng-untouched ng-valid ng-valid-maxlength']")).sendKeys(i);
+					driver.findElement(By.xpath("//*[@class='cmpm-button']")).click();
+					List<WebElement> searchItems = driver.findElements(By.xpath("//*[@class='webstr-time-work-items-actions ng-scope ng-isolate-scope']/child::td[@class='webstr-time-rwd-table-cell-pmt webstr-time-rwd-table-auto-width-cell']"));
+					for(WebElement searchItem : searchItems){
+						if(searchItem.equals(i)){
+							
+						}
+					}
+					driver.get("https://www.e-access.att.com/mobilecmpm/cmpm/#/time/timecard");
+					counter+=1;
+					
+					
 				}
 			}
 		}
-		
+
 	}
 
 
@@ -103,8 +129,8 @@ public class DataDrivenTest2 {
 	@BeforeMethod
 	public void setUp() {
 		System.setProperty("webdriver.chrome.driver", "browserDrivers/Chrome/chromedriver.exe");
-		 driver = new ChromeDriver();
-		 driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		driver = new ChromeDriver();
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	}
 
 	@AfterMethod
@@ -113,8 +139,8 @@ public class DataDrivenTest2 {
 			/*System.out.println(testResult.getStatus());*/
 			File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
 			FileUtils.copyFile(scrFile, new File("TestData/" + ctx.getCurrentXmlTest().getParameter("param1") + ".jpg"));
-		
-	   }    
+
+		}    
 		/*driver.close();
 		driver.quit();*/
 	}
@@ -123,7 +149,7 @@ public class DataDrivenTest2 {
 	@DataProvider(name = "calculatorTestData")
 	public Object[][] calculatorData() {
 		List<testing.DataDrivenTest2.calculator> testData = new ArrayList<testing.DataDrivenTest2.calculator>();
-		
+
 		try {
 			String testDataFilePath = "TestData/Timesheet.xlsx";
 			FileInputStream inputStream = new FileInputStream(new File(testDataFilePath));
@@ -245,11 +271,11 @@ public class DataDrivenTest2 {
 						e06 = __tmpStr;
 
 					__count++;
-					
-					
+
+
 				}
 				testing.DataDrivenTest2.calculator _tmpCalc = new calculator(username, password, n01,  n02,  n03,  n04,  n05,  e01,  e02,  n06,  n07,  n08,  n09,  n10,  e03,  e04,  n11,  n12,  n13,  n14,  n15,  e05,  e06);
-				
+
 				testData.add(_tmpCalc);
 			}
 			inputStream.close();
