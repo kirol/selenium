@@ -1,1 +1,6 @@
 List<WebElement> elements = driver.findElements(By.xpath(prop.getProperty("billto")));
+for ( WebElement we: elements) { 
+        dropDown.sendKeys( Keys.DOWN ); //simulate visual movement
+        sleep(250);       
+        if ( we.getText().contains( text ) ) select.selectByVisibleText("Value1");
+    }

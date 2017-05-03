@@ -1,7 +1,3 @@
-/**
- * @author Thanh Tran
- *
- */
 
 package testing;
 
@@ -9,9 +5,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.TakesScreenshot;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -31,6 +31,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -43,7 +44,26 @@ public class DataDrivenTest2 {
 	WebDriver driver;
 
 	@Test(dataProvider="calculatorTestData")
-	public void testSimpleCalculator(testing.DataDrivenTest2.calculator calc) {
+	public void testSimpleCalculator(testing.DataDrivenTest2.calculator calc, ITestContext ctx) {
+		ArrayList<String> list = new ArrayList<String>();  
+		list.add(calc.n01);
+		list.add(calc.n02);
+		list.add(calc.n03);
+		list.add(calc.n04);
+		list.add(calc.n05);
+		list.add(calc.n06);
+		list.add(calc.n07);
+		list.add(calc.n08);
+		list.add(calc.n09);
+		list.add(calc.n10);
+		list.add(calc.n11);
+		list.add(calc.n12);
+		list.add(calc.n13);
+		list.add(calc.n14);
+		list.add(calc.n15);
+		/*System.out.println("List of: " + list);*/
+		
+		ctx.getCurrentXmlTest().addParameter("param1", calc.username);
 		driver.get("https://www.e-access.att.com/mobilecmpm/cmpm/");
 		WebElement username = driver.findElement(By.xpath("html/body/form[1]/table[3]/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[1]/td/input"));
 		username.sendKeys(calc.username);
@@ -53,52 +73,52 @@ public class DataDrivenTest2 {
 		submitBtn.click();
 		WebElement okBtn = driver.findElement(By.xpath(".//*[@id='srv_successok']/input"));
 		okBtn.click();
-		WebElement webstr = driver.findElement(By.xpath("html/body/div/div/div/div[1]"));
+		WebElement webstr = driver.findElement(By.xpath("//*[@class='cmpm-dashboard-home-menu-item ng-scope']"));
 		webstr.click();
 		WebElement enterTime = driver.findElement(By.xpath("html/body/div/div/div/div/span[1]"));
 		enterTime.click();
-		
+		List<WebElement> workItems = driver.findElements(By.xpath("//*[@class='ng-scope ng-isolate-scope']/child::td[@class='webstr-time-rwd-table-cell-pmt webstr-time-rwd-table-auto-width-cell']"));
+		for(WebElement workItem : workItems){
+			System.out.println("This is the workItem: " + workItem.getAttribute("title"));
+			driver.findElements(By.xpath("//*[@class='ng-scope ng-isolate-scope']/child::td[@class='webstr-time-rwd-table-cell-pmt webstr-time-rwd-table-auto-width-cell']"));
+			for(String i : list){
+				if(i.equals(workItem.getAttribute("title"))){
+					System.out.println("OKOKOK");
+				}else if(i.equals("0")){
+					System.out.println("Do nothing");
+				}
+				else{
+					System.out.println("NONONO");
+					/*driver.get("https://www.e-access.att.com/mobilecmpm/cmpm/#/time/wi_search");*/
+					driver.
+				}
+			}
+		}
 		
 	}
 
-	/* Just for checking data provider.... */
-	/*@Test(dataProvider = "calculatorTestData")
-	public void checkTestData(testing.DataDrivenTest2.calculator calc) {
-		System.out.println("no1: " + calc.username);
-		System.out.println("no2: " + calc.password);
-	}
-*/
+
 
 
 	@BeforeMethod
 	public void setUp() {
 		System.setProperty("webdriver.chrome.driver", "browserDrivers/Chrome/chromedriver.exe");
 		 driver = new ChromeDriver();
+		 driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 	}
 
 	@AfterMethod
-	public void takeScreenShotOnFailure(ITestResult testResult) throws IOException {
+	public void takeScreenShotOnFailure(ITestResult testResult, ITestContext ctx) throws IOException {
 		if (testResult.getStatus() == ITestResult.FAILURE) {
-			System.out.println(testResult.getStatus());
+			/*System.out.println(testResult.getStatus());*/
 			File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-			FileUtils.copyFile(scrFile, new File("TestData/testScreenShot.jpg"));
+			FileUtils.copyFile(scrFile, new File("TestData/" + ctx.getCurrentXmlTest().getParameter("param1") + ".jpg"));
 		
 	   }    
-		driver.close();
-		driver.quit();
+		/*driver.close();
+		driver.quit();*/
 	}
-	/*
-	@AfterMethod
-	public void tearDown() {
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		driver.close();
-		driver.quit();
-	}*/
+
 
 	@DataProvider(name = "calculatorTestData")
 	public Object[][] calculatorData() {
@@ -149,7 +169,10 @@ public class DataDrivenTest2 {
 						__tmpStr = cell.getStringCellValue();
 						break;
 					case Cell.CELL_TYPE_NUMERIC:
-						__tmpStr = Double.toString(cell.getNumericCellValue());
+						NumberFormat nf = new DecimalFormat("#.####");
+
+						/*__tmpStr = Double.toString(cell.getNumericCellValue());*/
+						__tmpStr = nf.format(cell.getNumericCellValue());
 						break;
 					}
 					if (__count == 0)
@@ -276,20 +299,20 @@ public class DataDrivenTest2 {
 			n03 = a5;
 			n04 = a6;
 			n05 = a7;
-			n06 = a8;
-			n07 = a9;
-			n08 = a10;
-			n09 = a11;
-			n10 = a12;
-			n11 = a13;
-			n12 = a14;
-			n13 = a15;
-			n14 = a16;
-			n15 = a17;
-			e01 = a18;
-			e02 = a19;
-			e03 = a20;
-			e04 = a21;
+			n06 = a10;
+			n07 = a11;
+			n08 = a12;
+			n09 = a13;
+			n10 = a14;
+			n11 = a17;
+			n12 = a18;
+			n13 = a19;
+			n14 = a20;
+			n15 = a21;
+			e01 = a8;
+			e02 = a9;
+			e03 = a15;
+			e04 = a16;
 			e05 = a22;
 			e06 = a23;
 		}
