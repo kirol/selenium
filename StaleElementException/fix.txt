@@ -1,0 +1,7 @@
+try {
+
+Element which causes error
+
+}catch(StaleElementReferenceException e){
+			
+		}
