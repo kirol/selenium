@@ -173,7 +173,7 @@ public class DataDrivenTest2 {
 
 
 								WebElement test = searchItem.findElement(By.xpath("./child::td[@class='webstr-time-rwd-table-cell-work-item webstr-time-rwd-table-auto-width-cell']"));
-								if(test.getAttribute("title").equals("Construction") && searchItem.findElements(By.xpath("./descendant::span[@title='Add']")).size() > 0){
+								if(test.getAttribute("title").equals("Construction") && searchItem.findElement(By.xpath("./descendant::span[@title='Add']")).isDisplayed()){
 									/*WebElement thumbUpIcon = searchItem.findElement(By.xpath("./child::*[@title='Add']"));*/
 										searchItem.findElement(By.xpath("./descendant::span[@title='Add']")).click();
 										driver.get("https://www.e-access.att.com/mobilecmpm/cmpm/#/time/timecard");
