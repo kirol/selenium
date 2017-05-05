@@ -1,0 +1,15 @@
+In Test annotation:
+ctx.getCurrentXmlTest().addParameter("param1", calc.username);
+
+In AfterMethod annotion:
+@AfterMethod
+	public void takeScreenShotOnFailure(ITestResult testResult, ITestContext ctx) throws IOException {
+		if (testResult.getStatus() == ITestResult.FAILURE) {
+			/*System.out.println(testResult.getStatus());*/
+			File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+			FileUtils.copyFile(scrFile, new File("TestData/" + ctx.getCurrentXmlTest().getParameter("param1") + ".jpg"));
+
+		}    
+		/*driver.close();
+		driver.quit();*/
+	}
