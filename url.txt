@@ -87,7 +87,7 @@ public class DataDrivenTest2 {
 		enterTime.click();
 
 		// Add missing code - Start
-		Iterator chargeCodes = list.iterator();
+		/*Iterator chargeCodes = list.iterator();
 
 		while(chargeCodes.hasNext()){
 			List<WebElement> list02 = driver.findElements(By.xpath("//*[@class='ng-scope ng-isolate-scope']"));
@@ -95,9 +95,9 @@ public class DataDrivenTest2 {
 			System.out.println("Current item is: " + iChargeCode);
 			Iterator listOfWorkItems = list02.iterator();
 			while(listOfWorkItems.hasNext()){
-				WebElement we = (WebElement) listOfWorkItems.next();
-				WebElement workItem = we.findElement(By.xpath("./child::td[@class='webstr-time-rwd-table-cell-pmt webstr-time-rwd-table-auto-width-cell']"));  // charge code of work item
-				if(iChargeCode.equals(workItem.getAttribute("title")) || iChargeCode.equals("0")){
+				WebElement we1 = (WebElement) listOfWorkItems.next();
+				WebElement workItem1 = we1.findElement(By.xpath("./child::td[@class='webstr-time-rwd-table-cell-pmt webstr-time-rwd-table-auto-width-cell']"));  // charge code of work item
+				if(iChargeCode.equals(workItem1.getAttribute("title")) || iChargeCode.equals("0")){
 					System.out.println("Do nothing");
 					break;
 				}else{
@@ -133,7 +133,7 @@ public class DataDrivenTest2 {
 					}
 				}
 			}
-		}
+		}*/
 		// Add missing code - End
 
 
@@ -145,12 +145,13 @@ public class DataDrivenTest2 {
 			JSONObject obj = new JSONObject();
 
 			int counter = 0;
-			int counterFrom1To5 = 0;
-			System.out.println(counter);
+			int counterFrom1To5 = 0;	
 			Iterator iter00 = list.iterator();
 			masterloop:
 				while(iter00.hasNext()){
+					
 					String i = (String)iter00.next();
+					System.out.println(i);
 
 					Iterator iter = workItems.iterator();
 					while(iter.hasNext()){
@@ -167,7 +168,7 @@ public class DataDrivenTest2 {
 						if(counter == 5){
 							Boolean isEnabledWeek2 = driver.findElement(By.xpath("//*[text()='2']")).isEnabled();
 							if(isEnabledWeek2.equals(false)){
-								System.out.println("Break out of here");
+								System.out.println("Break out of here" + counter);
 								break masterloop;
 							}
 						}
@@ -185,14 +186,17 @@ public class DataDrivenTest2 {
 							}
 							li = (List<WebElement>) obj.get(i);
 							li.get(counterFrom1To5).sendKeys(Keys.chord(Keys.CONTROL,"a"), "8");
-							counter+=1;
+							
 							counterFrom1To5+=1;
 							System.out.println("Object: " + obj);
+							break;
 						}else if(i.equals("0")){
-							counter+=1;
+							System.out.println("Do nothing");
+						
 							counterFrom1To5+=1;
+							break;
 						}
-					}
+					}counter+=1;
 				}
 		}catch(StaleElementReferenceException e){
 
