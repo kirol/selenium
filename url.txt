@@ -139,7 +139,7 @@ public class DataDrivenTest2 {
 
 		// Add working time - Start 
 		try{
-			driver.findElement(By.xpath("//*[text()='1']")).sendKeys(Keys.ENTER);
+			/*driver.findElement(By.xpath("//*[text()='1']")).sendKeys(Keys.ENTER);*/
 			
 			List<WebElement> workItems = driver.findElements(By.xpath("//*[@class='ng-scope ng-isolate-scope']"));
 
@@ -169,10 +169,11 @@ public class DataDrivenTest2 {
 
 						if(counter == 5){
 							Boolean isEnabledWeek2 = driver.findElement(By.xpath("//*[text()='2']")).isEnabled();
-							if(isEnabledWeek2.equals(false)){
+							/*if(isEnabledWeek2.equals(false)){
 								System.out.println("Break out of here" + counter);
 								break masterloop;
-							}
+							}*/
+							break masterloop;
 						}
 
 						if(i.equals(workItem.getAttribute("title"))){
@@ -220,7 +221,10 @@ public class DataDrivenTest2 {
 			File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
 			FileUtils.copyFile(scrFile, new File("TestData/" + ctx.getCurrentXmlTest().getParameter("param1") + ".jpg"));
 
-		}    
+		} else{
+			File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+			FileUtils.copyFile(scrFile, new File("TestData/success_" + ctx.getCurrentXmlTest().getParameter("param1") + ".jpg"));
+		}
 		/*driver.close();
 		driver.quit();*/
 	}
