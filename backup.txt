@@ -1,0 +1,473 @@
+
+package testing;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.TakesScreenshot;
+import org.apache.commons.io.FileUtils;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.json.simple.JSONObject;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import org.testng.ITestContext;
+import org.testng.ITestResult;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+/*from selenium.webdriver.common.keys import Keys;*/
+
+
+import com.gargoylesoftware.htmlunit.javascript.host.Console;
+
+import testing.DataDrivenTest.calculator;
+
+public class DataDrivenTest2 {
+	WebDriver driver;
+
+	@Test(dataProvider="calculatorTestData")
+	public void testSimpleCalculator(testing.DataDrivenTest2.calculator calc, ITestContext ctx) throws InterruptedException {
+		ArrayList<String> list = new ArrayList<String>();  
+		list.add(calc.n01);
+		list.add(calc.n02);
+		list.add(calc.n03);
+		list.add(calc.n04);
+		list.add(calc.n05);
+		list.add(calc.n06);
+		list.add(calc.n07);
+		list.add(calc.n08);
+		list.add(calc.n09);
+		list.add(calc.n10);
+		list.add(calc.n11);
+		list.add(calc.n12);
+		list.add(calc.n13);
+		list.add(calc.n14);
+		list.add(calc.n15);
+		ArrayList<String> list02 = list;
+		/*System.out.println("List of: " + list);*/
+
+		ctx.getCurrentXmlTest().addParameter("param1", calc.username);
+		driver.get("https://www.e-access.att.com/mobilecmpm/cmpm/");
+		WebElement username = driver.findElement(By.xpath("html/body/form[1]/table[3]/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[1]/td/input"));
+		username.sendKeys(calc.username);
+		WebElement password = driver.findElement(By.xpath("html/body/form[1]/table[3]/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[3]/td/input"));
+		password.sendKeys(calc.password);
+		WebElement submitBtn = driver.findElement(By.xpath("html/body/form[1]/table[3]/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[5]/td/input"));
+		submitBtn.click();
+		WebElement okBtn = driver.findElement(By.xpath(".//*[@id='srv_successok']/input"));
+		okBtn.click();
+		WebElement webstr = driver.findElement(By.xpath("//*[@class='cmpm-dashboard-home-menu-item ng-scope']"));
+		webstr.click();
+		WebElement enterTime = driver.findElement(By.xpath("html/body/div/div/div/div/span[1]"));
+		enterTime.click();
+
+		// Add missing code - Start
+		/*Iterator chargeCodes = list.iterator();
+
+		while(chargeCodes.hasNext()){
+			List<WebElement> list_AMC = driver.findElements(By.xpath("//*[@class='ng-scope ng-isolate-scope']"));
+			String iChargeCode = (String)chargeCodes.next();   // charge code in excel file
+			System.out.println("Current item is: " + iChargeCode);
+			Iterator listOfWorkItems = list_AMC.iterator();
+			
+			
+			// Initilize work item for first time user - start
+			while(true){
+			if(listOfWorkItems.hasNext()){
+				break;
+			}else{
+				System.out.println("NONONO");
+				try{
+					Actions actions_AMC = new Actions(driver);
+					actions_AMC.moveToElement(driver.findElement(By.xpath("//*[@class='cmpm-icon-menu-icon']")));
+					actions_AMC.click();
+					actions_AMC.moveToElement(driver.findElement(By.xpath("//*[text()='Add Work Item']")));
+					actions_AMC.click();
+					actions_AMC.build().perform();
+				}catch(org.openqa.selenium.StaleElementReferenceException e){
+
+				}
+				driver.findElement(By.xpath("//*[@class='ng-pristine ng-untouched ng-valid ng-valid-maxlength']")).sendKeys(iChargeCode);
+				driver.findElement(By.xpath("//*[@class='cmpm-button']")).click();
+
+				List<WebElement> searchItems = driver.findElements(By.xpath("//*[@class='webstr-time-work-items-actions ng-scope ng-isolate-scope']"));
+				for(WebElement searchItem : searchItems){
+					WebElement test = searchItem.findElement(By.xpath("./child::td[@class='webstr-time-rwd-table-cell-work-item webstr-time-rwd-table-auto-width-cell']"));
+					if(test.getAttribute("title").equals("Construction") && searchItem.findElement(By.xpath("./descendant::span[@title='Add']")).isDisplayed())
+					{
+						searchItem.findElement(By.xpath("./descendant::span[@title='Add']")).click();
+						driver.get("https://www.e-access.att.com/mobilecmpm/cmpm/#/time/timecard");
+					}else{
+						System.out.println("There is no thumb icon or there is no charge code or this code is non-construction");
+						Assert.assertEquals("3", "5");
+					}
+				}
+			}
+			}
+			// Initilize work item for first time user - end
+			
+			while(listOfWorkItems.hasNext()){
+				WebElement tmp_AMC = (WebElement) listOfWorkItems.next();
+				WebElement workItem1 = tmp_AMC.findElement(By.xpath("./child::td[@class='webstr-time-rwd-table-cell-pmt webstr-time-rwd-table-auto-width-cell']"));  // charge code of work item
+				System.out.println("Title" + workItem1.getAttribute("title"));
+				if(iChargeCode.equals(workItem1.getAttribute("title")) || iChargeCode.equals("0")){
+					System.out.println("Do nothing");
+					break;
+				}else{
+					if( listOfWorkItems.hasNext()){
+						System.out.println("Has next");
+					}else{
+						System.out.println("NONONO");
+						try{
+							Actions actions_AMC = new Actions(driver);
+							actions_AMC.moveToElement(driver.findElement(By.xpath("//*[@class='cmpm-icon-menu-icon']")));
+							actions_AMC.click();
+							actions_AMC.moveToElement(driver.findElement(By.xpath("//*[text()='Add Work Item']")));
+							actions_AMC.click();
+							actions_AMC.build().perform();
+						}catch(org.openqa.selenium.StaleElementReferenceException e){
+
+						}
+						driver.findElement(By.xpath("//*[@class='ng-pristine ng-untouched ng-valid ng-valid-maxlength']")).sendKeys(iChargeCode);
+						driver.findElement(By.xpath("//*[@class='cmpm-button']")).click();
+
+						List<WebElement> searchItems = driver.findElements(By.xpath("//*[@class='webstr-time-work-items-actions ng-scope ng-isolate-scope']"));
+						for(WebElement searchItem : searchItems){
+							WebElement test = searchItem.findElement(By.xpath("./child::td[@class='webstr-time-rwd-table-cell-work-item webstr-time-rwd-table-auto-width-cell']"));
+							if(test.getAttribute("title").equals("Construction") && searchItem.findElement(By.xpath("./descendant::span[@title='Add']")).isDisplayed())
+							{
+								searchItem.findElement(By.xpath("./descendant::span[@title='Add']")).click();
+								driver.get("https://www.e-access.att.com/mobilecmpm/cmpm/#/time/timecard");
+							}else{
+								System.out.println("There is no thumb icon or there is no charge code or this code is non-construction");
+								Assert.assertEquals("3", "5");
+							}
+						}
+					}
+				}
+			}
+		}*/
+		// Add missing code - End
+
+
+		// Add working time - Start 
+		try{
+			
+			
+			List<WebElement> workItems = driver.findElements(By.xpath("//*[@class='ng-scope ng-isolate-scope']"));
+
+			List<WebElement> li = null;
+			JSONObject obj = new JSONObject();
+
+			int counter = 0;
+			int counterFrom1To5 = 0;	
+			Iterator iter00 = list02.iterator();
+			masterloop:
+				while(iter00.hasNext()){
+					
+					String i = (String)iter00.next();
+					System.out.println(i);
+
+					Iterator iter = workItems.iterator();
+					while(iter.hasNext()){
+						WebElement we = (WebElement) iter.next();
+						WebElement workItem = we.findElement(By.xpath("./child::td[@class='webstr-time-rwd-table-cell-pmt webstr-time-rwd-table-auto-width-cell']"));
+						if(counterFrom1To5 == 5 || counterFrom1To5 == 0){
+							Boolean isPresent = driver.findElements(By.xpath("//*[@class='imc-glyph imc-glyph-kb cmpm-iconbar-icon-on']")).size() > 0;
+							if(isPresent.equals(false)){
+								driver.findElement(By.xpath("//*[@title='Toggle inline editing']")).click();
+							}
+							counterFrom1To5 = 0;
+						}
+						
+						
+
+						if(counter == 5){
+							Boolean isEnabledWeek2 = driver.findElement(By.xpath("//*[text()='2']")).isEnabled();
+							
+							break masterloop;
+						}
+
+						if(i.equals(workItem.getAttribute("title"))){
+							li =  we.findElements(By.xpath("./descendant::*[@title='Enter REG hours']/child::*"));
+							if(obj.containsKey(i)){
+							}else{
+								obj.put(i, li);
+							}
+							System.out.println("OKOKOK");
+							Boolean isPresent = driver.findElements(By.xpath("//*[@class='imc-glyph imc-glyph-kb cmpm-iconbar-icon-on']")).size() > 0;
+							if(isPresent.equals(false)){
+								driver.findElement(By.xpath("//*[@title='Toggle inline editing']")).click();
+							}
+							li = (List<WebElement>) obj.get(i);
+							li.get(counterFrom1To5).sendKeys(Keys.chord(Keys.CONTROL,"a"), "8");
+							
+							counterFrom1To5+=1;
+							System.out.println("Object: " + obj);
+							break;
+						}else if(i.equals("0")){
+							System.out.println("Do nothing");
+						
+							counterFrom1To5+=1;
+							break;
+						}
+					}counter+=1;
+				}
+		}catch(StaleElementReferenceException e){
+
+		}
+		// Add working time - End
+	}
+
+	@BeforeMethod
+	public void setUp() {
+		System.setProperty("webdriver.chrome.driver", "browserDrivers/Chrome/chromedriver.exe");
+		driver = new ChromeDriver();
+		driver.manage().timeouts().implicitlyWait(7, TimeUnit.SECONDS);
+	}
+
+	@AfterMethod
+	public void takeScreenShotOnFailure(ITestResult testResult, ITestContext ctx) throws IOException {
+		if (testResult.getStatus() == ITestResult.FAILURE) {
+			/*System.out.println(testResult.getStatus());*/
+			File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+			FileUtils.copyFile(scrFile, new File("TestData/" + ctx.getCurrentXmlTest().getParameter("param1") + " - FAILED.jpg"));
+
+		}    
+		
+		else if (testResult.getStatus() == ITestResult.SUCCESS) {
+			/*System.out.println(testResult.getStatus());*/
+			File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+			FileUtils.copyFile(scrFile, new File("TestData/" + ctx.getCurrentXmlTest().getParameter("param1") + " - SUCCESS.jpg"));
+
+		}    
+		/*driver.close();
+		driver.quit();*/
+	}
+
+
+	@DataProvider(name = "calculatorTestData")
+	public Object[][] calculatorData() {
+		List<testing.DataDrivenTest2.calculator> testData = new ArrayList<testing.DataDrivenTest2.calculator>();
+
+		try {
+			String testDataFilePath = "TestData/Timesheet.xlsx";
+			FileInputStream inputStream = new FileInputStream(new File(testDataFilePath));
+
+			XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
+			XSSFSheet firstSheet = workbook.getSheet("Sheet2");
+			XSSFRow nextRow;
+			Iterator iterator = firstSheet.rowIterator();
+
+			while (iterator.hasNext()) {
+				nextRow = (XSSFRow) iterator.next();
+				Iterator cellIterator = nextRow.cellIterator();
+				String username = "";
+				String password = "";
+				String n01 = "";
+				String n02 = "";
+				String n03 = "";
+				String n04 = "";
+				String n05 = "";
+				String n06 = "";
+				String n07 = "";
+				String n08 = "";
+				String n09 = "";
+				String n10 = "";
+				String n11 = "";
+				String n12 = "";
+				String n13 = "";
+				String n14 = "";
+				String n15 = "";
+				String e01 = "";
+				String e02 = "";
+				String e03 = "";
+				String e04 = "";
+				String e05 = "";
+				String e06 = "";
+				int __count = 0;
+				String __tmpStr = "";
+				while (cellIterator.hasNext()) {
+					XSSFCell cell = (XSSFCell) cellIterator.next();
+
+					switch (cell.getCellType()) {
+					case Cell.CELL_TYPE_STRING:
+						__tmpStr = cell.getStringCellValue();
+						break;
+					case Cell.CELL_TYPE_NUMERIC:
+						NumberFormat nf = new DecimalFormat("#.####");
+
+						/*__tmpStr = Double.toString(cell.getNumericCellValue());*/
+						__tmpStr = nf.format(cell.getNumericCellValue());
+						break;
+					}
+					if (__count == 0)
+						username = __tmpStr;
+
+					if (__count == 1)
+						password = __tmpStr;
+
+					if (__count == 2)
+						n01 = __tmpStr;
+
+					if (__count == 3)
+						n02 = __tmpStr;
+
+					if (__count == 4)
+						n03 = __tmpStr;
+
+					if (__count == 5)
+						n04 = __tmpStr;
+
+					if (__count == 6)
+						n05 = __tmpStr;
+
+					if (__count == 7)
+						e01 = __tmpStr;
+
+					if (__count == 8)
+						e02 = __tmpStr;
+
+					if (__count == 9)
+						n06 = __tmpStr;
+
+					if (__count == 10)
+						n07 = __tmpStr;
+
+					if (__count == 11)
+						n08 = __tmpStr;
+
+					if (__count == 12)
+						n09 = __tmpStr;
+
+					if (__count == 13)
+						n10 = __tmpStr;
+
+					if (__count == 14)
+						e03 = __tmpStr;
+
+					if (__count == 15)
+						e04 = __tmpStr;
+
+					if (__count == 16)
+						n11 = __tmpStr;
+
+					if (__count == 17)
+						n12 = __tmpStr;
+
+					if (__count == 18)
+						n13 = __tmpStr;
+
+					if (__count == 19)
+						n14 = __tmpStr;
+
+					if (__count == 20)
+						n15 = __tmpStr;
+
+					if (__count == 21)
+						e05 = __tmpStr;
+
+					if (__count == 22)
+						e06 = __tmpStr;
+
+					__count++;
+
+
+				}
+				testing.DataDrivenTest2.calculator _tmpCalc = new calculator(username, password, n01,  n02,  n03,  n04,  n05,  e01,  e02,  n06,  n07,  n08,  n09,  n10,  e03,  e04,  n11,  n12,  n13,  n14,  n15,  e05,  e06);
+
+				testData.add(_tmpCalc);
+			}
+			inputStream.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+		Object[][] objArray = new Object[testData.size()][];
+		for (int i = 0; i < testData.size(); i++) {
+			objArray[i] = new Object[1];
+			objArray[i][0] = testData.get(i);
+		}
+
+		return objArray;
+	}
+
+	class calculator {
+		String username;
+		String password;
+		String n01;
+		String n02;
+		String n03;
+		String n04;
+		String n05;
+		String n06;
+		String n07;
+		String n08;
+		String n09;
+		String n10;
+		String n11;
+		String n12;
+		String n13;
+		String n14;
+		String n15;
+		String e01;
+		String e02;
+		String e03;
+		String e04;
+		String e05;
+		String e06;
+
+		calculator(String a1, String a2, String a3, String a4, String a5, String a6, String a7, String a8, String a9, String a10, String a11, String a12, String a13, String a14, String a15, String a16, String a17, String a18, String a19, String a20, String a21, String a22, String a23) {
+			username = a1;
+			password = a2;
+			n01 = a3;
+			n02 = a4;
+			n03 = a5;
+			n04 = a6;
+			n05 = a7;
+			n06 = a10;
+			n07 = a11;
+			n08 = a12;
+			n09 = a13;
+			n10 = a14;
+			n11 = a17;
+			n12 = a18;
+			n13 = a19;
+			n14 = a20;
+			n15 = a21;
+			e01 = a8;
+			e02 = a9;
+			e03 = a15;
+			e04 = a16;
+			e05 = a22;
+			e06 = a23;
+		}
+	}
+
+}
