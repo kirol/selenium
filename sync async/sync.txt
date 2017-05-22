@@ -1,0 +1,20 @@
+Use try catch to sync 
+
+try{
+			List<WebElement> elements = driver.findElements(By.xpath("//*[@class='inline-edit-input-margin ng-pristine ng-untouched ng-valid ng-valid-pattern ng-valid-maxlength']"));
+			for ( WebElement we: elements) { 
+				if(we.isDisplayed()){
+				we.sendKeys(Keys.chord(Keys.CONTROL,"a"), "0");
+				}
+			}}catch(Exception e){
+				
+			}
+			
+			// Finish running above items before running below items
+
+
+			// 1 row of work items
+			List<WebElement> workItems = driver.findElements(By.xpath("//*[@class='ng-scope ng-isolate-scope']"));
+
+			List<WebElement> li = null;
+			JSONObject obj = new JSONObject();

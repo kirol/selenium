@@ -101,8 +101,8 @@ public class DataDrivenTest2 {
 			String iChargeCode = (String)chargeCodes.next();   // charge code in excel file
 			System.out.println("Current item is: " + iChargeCode);
 			Iterator listOfWorkItems = list_AMC.iterator();
-			
-			
+
+
 			// Initilize work item for first time user - start
 			while(true){
 			if(listOfWorkItems.hasNext()){
@@ -137,7 +137,7 @@ public class DataDrivenTest2 {
 			}
 			}
 			// Initilize work item for first time user - end
-			
+
 			while(listOfWorkItems.hasNext()){
 				WebElement tmp_AMC = (WebElement) listOfWorkItems.next();
 				WebElement workItem1 = tmp_AMC.findElement(By.xpath("./child::td[@class='webstr-time-rwd-table-cell-pmt webstr-time-rwd-table-auto-width-cell']"));  // charge code of work item
@@ -185,22 +185,38 @@ public class DataDrivenTest2 {
 		// Add working time - Start 
 		try{
 			Thread.sleep(5000);
+
+			// Change week 
+			driver.findElement(By.xpath("//*[text()='3']")).sendKeys(Keys.ENTER);
+
 			driver.findElement(By.xpath("//*[@title='Toggle inline editing']")).click();
-			
+
+			// Remove values in every work items fields
+			try{
+			List<WebElement> elements = driver.findElements(By.xpath("//*[@class='inline-edit-input-margin ng-pristine ng-untouched ng-valid ng-valid-pattern ng-valid-maxlength']"));
+			for ( WebElement we: elements) { 
+				if(we.isDisplayed()){
+				we.sendKeys(Keys.chord(Keys.CONTROL,"a"), "0");
+				}
+			}}catch(Exception e){
+				
+			}
+
+
 			// 1 row of work items
 			List<WebElement> workItems = driver.findElements(By.xpath("//*[@class='ng-scope ng-isolate-scope']"));
 
 			List<WebElement> li = null;
 			JSONObject obj = new JSONObject();
 
-			
+
 			int counterFrom1To5 = 1;	
 			Iterator iter00 = list02.iterator();
 			masterloop:
 				while(iter00.hasNext()){
-					
+
 					String i = (String)iter00.next();
-					
+
 
 					Iterator iter = workItems.iterator();
 					while(iter.hasNext()){
@@ -208,26 +224,26 @@ public class DataDrivenTest2 {
 						// Charge code on website
 						WebElement workItem = we.findElement(By.xpath("./child::*[@class='webstr-time-rwd-table-cell-pmt webstr-time-rwd-table-auto-width-cell']"));
 						if(counterFrom1To5 == 6){
-							
-							
+
+							driver.findElement(By.xpath("//*[@title='Toggle inline editing']")).click();
 							break masterloop;
 						}
 						System.out.println(i);
-					
+
 
 						if(i.equals(workItem.getAttribute("title"))){
 							li =  we.findElements(By.xpath("./descendant::*[@title='Enter REG hours']/child::*"));
 							if(obj.containsKey(i)){
 							}else{
 								obj.put(i, li);
-								
+
 							}
 							System.out.println("OKOKOK");
-							
-							
+
+
 							li = (List<WebElement>) obj.get(i);
 							li.get(counterFrom1To5).sendKeys(Keys.chord(Keys.CONTROL,"a"), "8");
-							
+
 							/*WebElement element = li.get(counterFrom1To5);
 							JavascriptExecutor executor = (JavascriptExecutor)driver;
 							executor.executeScript("var ele=arguments[0]; ele.innerHTML = '&nbsp;&nbsp;&nbsp;8.00';", element);*/
@@ -237,7 +253,7 @@ public class DataDrivenTest2 {
 							break;
 						}else if(i.equals("0")){
 							System.out.println("Do nothing");
-						
+
 							counterFrom1To5+=1;
 							break;
 						}
@@ -264,15 +280,15 @@ public class DataDrivenTest2 {
 			FileUtils.copyFile(scrFile, new File("TestData/" + ctx.getCurrentXmlTest().getParameter("param1") + " - FAILED.jpg"));
 
 		}    
-		
+
 		else if (testResult.getStatus() == ITestResult.SUCCESS) {
 			/*System.out.println(testResult.getStatus());*/
 			File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
 			FileUtils.copyFile(scrFile, new File("TestData/" + ctx.getCurrentXmlTest().getParameter("param1") + " - SUCCESS.jpg"));
 
 		}    
-		/*driver.close();
-		driver.quit();*/
+		driver.close();
+		driver.quit();
 	}
 
 
