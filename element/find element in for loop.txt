@@ -1,0 +1,4 @@
+List<WebElement> elements = driver.findElements(By.xpath("//tr[@class='row1'] | //tr[@class='row0']"));
+		for ( WebElement we: elements) { 
+			we.findElement(By.xpath("./descendant::*[@title='Enter REG hours']"));
+		}

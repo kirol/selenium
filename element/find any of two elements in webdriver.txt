@@ -1,0 +1,8 @@
+Element with id I1 or element with id I2
+
+xpath: //E1[@id=I1] | //E2[@id=I2]
+
+css: css=E1#I1,E2#I2
+
+driver.findElement(By.xpath(//E1[@id=I1] | //E2[@id=I2]))
+driver.findElement(By.cssSelector(E1#I1,E2#I2))
