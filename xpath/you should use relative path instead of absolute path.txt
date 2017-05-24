@@ -1,3 +1,7 @@
+Single Slash “/” – Single slash is used to create Xpath with absolute path i.e. the xpath would be created to start selection from the document node/start node.
+
+Double Slash “//” – Double slash is used to create Xpath with relative path i.e. the xpath would be created to start selection from anywhere within the document.
+
 headpiece=//*[@title="Headpiece"]
 cowboyhat_details=//*[text()="Cowboy Hat"]/parent::*/parent::*/parent::*//*[text()="Product details"]
 cowboyhat_size_select=//*[@id="customProductData_162_458_chzn"]

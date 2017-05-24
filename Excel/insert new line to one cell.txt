@@ -1,0 +1,10 @@
+Workbook wb = new XSSFWorkbook();  
+Sheet sheet = wb.createSheet();
+
+Row row = sheet.createRow(2);
+Cell cell = row.createCell(2);
+cell.setCellValue("Use \n with word wrap on to create a new line");
+
+CellStyle cs = wb.createCellStyle();
+cs.setWrapText(true);   //Wrapping text
+cell.setCellStyle(cs);
