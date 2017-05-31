@@ -1,0 +1,104 @@
+package testing;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+public class DataDrivenTest5 {
+	
+	public ArrayList<String> readXLSXFile(String fileName) {
+		ArrayList<String> sourceList = new ArrayList<String>();
+		InputStream XlsxFileToRead = null;
+		XSSFWorkbook workbook = null;
+		try {
+			XlsxFileToRead = new FileInputStream(fileName);
+			
+			//Getting the workbook instance for xlsx file
+			workbook = new XSSFWorkbook(XlsxFileToRead);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		//getting the first sheet from the workbook using sheet name. 
+		// We can also pass the index of the sheet which starts from '0'.
+		XSSFSheet sheet = workbook.getSheet("Sheet2");
+		XSSFRow row;
+		XSSFCell cell;
+		
+		//Iterating all the rows in the sheet
+		Iterator rows = sheet.rowIterator();
+
+		while (rows.hasNext()) {
+			row = (XSSFRow) rows.next();
+			
+			//Iterating all the cells of the current row
+			Iterator cells = row.cellIterator();
+
+			while (cells.hasNext()) {
+				cell = (XSSFCell) cells.next();
+
+				if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
+					/*System.out.print(cell.getStringCellValue() + " ");*/
+					sourceList.add(cell.getStringCellValue());
+				} else if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
+					/*System.out.print(cell.getNumericCellValue() + " ");*/
+					sourceList.add(Double.toString(cell.getNumericCellValue()));
+				} else if (cell.getCellType() == XSSFCell.CELL_TYPE_BOOLEAN) {
+					/*System.out.print(cell.getBooleanCellValue() + " ");*/
+					sourceList.add(Boolean.toString(cell.getBooleanCellValue()));
+
+				} else { // //Here if require, we can also add below methods to
+							// read the cell content
+							// XSSFCell.CELL_TYPE_BLANK
+							// XSSFCell.CELL_TYPE_FORMULA
+							// XSSFCell.CELL_TYPE_ERROR
+				}
+			}
+			System.out.println();
+			try {
+				XlsxFileToRead.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return sourceList;
+	}
+	
+	public static void main(String[] args) {
+		ArrayList<String> sourceList = new ArrayList<String>();
+		ArrayList<String> destList = new ArrayList<String>();
+		DataDrivenTest5 readXlsx = new DataDrivenTest5();
+		sourceList = readXlsx.readXLSXFile("TestData/Source.xlsx");	
+		destList = readXlsx.readXLSXFile("TestData/Dest.xlsx");	
+		
+		Collection<String> listOne = sourceList;
+	    Collection<String> listTwo = destList;
+
+
+	    List<String> sourceList01 = new ArrayList<String>(listOne);
+	    List<String> destinationList01 = new ArrayList<String>(listTwo);
+
+
+	    sourceList01.removeAll( listTwo );
+	    destinationList01.removeAll( listOne );
+
+
+
+	    System.out.println( sourceList01 );
+	    System.out.println( destinationList01);
+	}
+
+}
