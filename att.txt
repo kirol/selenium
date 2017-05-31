@@ -187,7 +187,7 @@ public class DataDrivenTest2 {
 			Thread.sleep(5000);
 
 			// Change week 
-			driver.findElement(By.xpath("//*[text()='2']")).sendKeys(Keys.ENTER);
+			driver.findElement(By.xpath("//*[text()='4']")).sendKeys(Keys.ENTER);
 
 			driver.findElement(By.xpath("//*[@title='Toggle inline editing']")).click();
 
@@ -244,9 +244,7 @@ public class DataDrivenTest2 {
 							li = (List<WebElement>) obj.get(i);
 							li.get(counterFrom1To5).sendKeys(Keys.chord(Keys.CONTROL,"a"), "8");
 
-							/*WebElement element = li.get(counterFrom1To5);
-							JavascriptExecutor executor = (JavascriptExecutor)driver;
-							executor.executeScript("var ele=arguments[0]; ele.innerHTML = '&nbsp;&nbsp;&nbsp;8.00';", element);*/
+					
 							System.out.println("Current counter is: " + counterFrom1To5);
 							counterFrom1To5+=1;
 							System.out.println("");
