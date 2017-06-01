@@ -2,4 +2,9 @@ driver.findElement(By.xpath("//*[@class='ng-scope ng-isolate-scope']/child::td[@
 
 The first line is equal to:
 WebElement we = driver.findElement(By.xpath("//*[@class='ng-scope ng-isolate-scope']"));
-we.findElement(By.xpath("/child::td[@class='webstr-time-rwd-table-cell-pmt webstr-time-rwd-table-auto-width-cell']"))
+we.findElement(By.xpath("./child::td[@class='webstr-time-rwd-table-cell-pmt webstr-time-rwd-table-auto-width-cell']"))
+
+
+By.xpath("//tr/child::td")
+
+
