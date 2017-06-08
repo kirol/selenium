@@ -1,3 +1,7 @@
 https://www.amazon.com/Test-Automation-using-Selenium-WebDriver/dp/0992293510/ref=sr_1_8?s=books&ie=UTF8&qid=1496312901&sr=1-8&keywords=selenium
  Selenium 2 Testing Tools: Beginner's Guide 
  https://www.amazon.com/Test-Automation-using-Selenium-WebDriver/dp/0992293510/ref=sr_1_8?s=books&ie=UTF8&qid=1496312901&sr=1-8&keywords=selenium
+ 
+ https://www.amazon.com/Subtle-Art-Not-Giving-Counterintuitive/dp/0062457713/ref=zg_bs_books_17?_encoding=UTF8&psc=1&refRID=0FTMD3VGSBVX38G26739
+ 
+ https://www.amazon.com/Break-Software-Security-James-Whittaker/dp/0321194330/ref=asap_bc?ie=UTF8
