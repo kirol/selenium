@@ -81,7 +81,7 @@ public class DataDrivenTest2 {
 		ArrayList<String> list02 = list;
 		/*System.out.println("List of: " + list);*/
 
-		
+		ctx.getCurrentXmlTest().addParameter("param1", calc.username);
 		driver.get("https://www.e-access.att.com/mobilecmpm/cmpm/");
 		WebElement username = driver.findElement(By.xpath("html/body/form[1]/table[3]/tbody/tr[2]/td/table/tbody/tr[2]/td/table/tbody/tr[1]/td/input"));
 		username.sendKeys(calc.username);
