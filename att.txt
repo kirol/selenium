@@ -1,6 +1,8 @@
 
 package testing;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
@@ -13,6 +15,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.TakesScreenshot;
@@ -181,13 +184,18 @@ public class DataDrivenTest2 {
 		}*/
 		// Add missing code - End
 
+		
+		
 
 		// Add working time - Start 
 		try{
 			Thread.sleep(5000);
-
+			
+			
+			
 			// Change week 
-			driver.findElement(By.xpath("//*[text()='4']")).sendKeys(Keys.ENTER);
+			String inputWeek = ctx.getCurrentXmlTest().getParameter("inputWeek");
+			driver.findElement(By.xpath("//*[text()='"+inputWeek+"']")).sendKeys(Keys.ENTER);
 
 			driver.findElement(By.xpath("//*[@title='Toggle inline editing']")).click();
 
@@ -202,37 +210,64 @@ public class DataDrivenTest2 {
 				
 			}
 
-
+			// Calculate maximum empty REG on one row
+			int maxCounter = 0;
+			try{
+			
+			WebElement oneRow = driver.findElement(By.xpath("//*[@class='ng-scope ng-isolate-scope']"));
+			List<WebElement> abc = oneRow.findElements(By.xpath("./descendant::*[@title='Enter REG hours']/child::*"));
+			for(WebElement abcwe : abc){
+				if(abcwe.isDisplayed()){
+					
+					maxCounter +=1;
+				}
+			}}catch(Exception e){
+				e.printStackTrace();
+			}
+			
+			
 			// 1 row of work items
 			List<WebElement> workItems = driver.findElements(By.xpath("//*[@class='ng-scope ng-isolate-scope']"));
 
 			List<WebElement> li = null;
+			List<WebElement> tmpLi  = null;
 			JSONObject obj = new JSONObject();
-
-
-			int counterFrom1To5 = 1;	
 			Iterator iter00 = list02.iterator();
+			int counterFrom1To5;
+			
+			// In this website, week 1 begins with counter from 0, other weeks (2,3,4,5) begins with counter from 1
+			if(inputWeek.equals("1")){
+				counterFrom1To5 = 0;
+			}else{
+				counterFrom1To5 = 1;
+				maxCounter +=1;
+			}
+			
+			// flag is used to break from two loops
 			masterloop:
+				// Loop through each excel cell
 				while(iter00.hasNext()){
 
 					String i = (String)iter00.next();
 
 
 					Iterator iter = workItems.iterator();
+					// Loop through each row
 					while(iter.hasNext()){
 						WebElement we = (WebElement) iter.next();
 						// Charge code on website
 						WebElement workItem = we.findElement(By.xpath("./child::*[@class='webstr-time-rwd-table-cell-pmt webstr-time-rwd-table-auto-width-cell']"));
-						if(counterFrom1To5 == 6){
-
+						if(counterFrom1To5 == maxCounter){
+							Thread.sleep(1000);
 							driver.findElement(By.xpath("//*[@title='Toggle inline editing']")).click();
 							break masterloop;
 						}
 						System.out.println(i);
 
-
+						// If i (a cell in excel file) equals to current row 's charge code
 						if(i.equals(workItem.getAttribute("title"))){
 							li =  we.findElements(By.xpath("./descendant::*[@title='Enter REG hours']/child::*"));
+							
 							if(obj.containsKey(i)){
 							}else{
 								obj.put(i, li);
@@ -247,7 +282,6 @@ public class DataDrivenTest2 {
 					
 							System.out.println("Current counter is: " + counterFrom1To5);
 							counterFrom1To5+=1;
-							System.out.println("");
 							break;
 						}else if(i.equals("0")){
 							System.out.println("Do nothing");
@@ -264,7 +298,15 @@ public class DataDrivenTest2 {
 	}
 
 	@BeforeMethod
-	public void setUp() {
+	@BeforeMethod
+	public void setUp(ITestContext ctx) {
+		
+		// Ask for which week to add working item
+		System.out.println("Enter the week: ");
+		Scanner scanner = new Scanner(System.in);
+		String inputWeek = scanner.next();
+		ctx.getCurrentXmlTest().addParameter("inputWeek", inputWeek);
+		
 		System.setProperty("webdriver.chrome.driver", "browserDrivers/Chrome/chromedriver.exe");
 		driver = new ChromeDriver();
 		driver.manage().timeouts().implicitlyWait(7, TimeUnit.SECONDS);
@@ -273,14 +315,12 @@ public class DataDrivenTest2 {
 	@AfterMethod
 	public void takeScreenShotOnFailure(ITestResult testResult, ITestContext ctx) throws IOException {
 		if (testResult.getStatus() == ITestResult.FAILURE) {
-			/*System.out.println(testResult.getStatus());*/
 			File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
 			FileUtils.copyFile(scrFile, new File("TestData/" + ctx.getCurrentXmlTest().getParameter("param1") + " - FAILED.jpg"));
 
 		}    
 
 		else if (testResult.getStatus() == ITestResult.SUCCESS) {
-			/*System.out.println(testResult.getStatus());*/
 			File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
 			FileUtils.copyFile(scrFile, new File("TestData/" + ctx.getCurrentXmlTest().getParameter("param1") + " - SUCCESS.jpg"));
 
@@ -290,7 +330,7 @@ public class DataDrivenTest2 {
 	}
 
 
-	@DataProvider(name = "calculatorTestData")
+	@DataProvider(name = "calculatorTestData", parallel=true)
 	public Object[][] calculatorData() {
 		List<testing.DataDrivenTest2.calculator> testData = new ArrayList<testing.DataDrivenTest2.calculator>();
 

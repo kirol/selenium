@@ -1,0 +1,2 @@
+When trying to invoke TestNG from the command line using java org.testng.TestNG testng1.xml
+If the error displays is (Error: Could not find or load main class org.testng.TestNG)
