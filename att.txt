@@ -3,6 +3,8 @@ package testing;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
+
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
@@ -57,11 +59,11 @@ import com.gargoylesoftware.htmlunit.javascript.host.Console;
 
 import testing.DataDrivenTest.calculator;
 
-public class DataDrivenTest2 {
+public class Att {
 	WebDriver driver;
 
 	@Test(dataProvider="calculatorTestData")
-	public void testSimpleCalculator(testing.DataDrivenTest2.calculator calc, ITestContext ctx) throws InterruptedException, AWTException {
+	public void testSimpleCalculator(testing.Att.calculator calc, ITestContext ctx) throws InterruptedException, AWTException {
 		ArrayList<String> list = new ArrayList<String>();  
 		list.add(calc.n01);
 		list.add(calc.n02);
@@ -97,7 +99,7 @@ public class DataDrivenTest2 {
 		enterTime.click();
 
 		// Add missing code - Start
-		/*Iterator chargeCodes = list.iterator();
+		Iterator chargeCodes = list.iterator();
 
 		while(chargeCodes.hasNext()){
 			List<WebElement> list_AMC = driver.findElements(By.xpath("//*[@class='ng-scope ng-isolate-scope']"));
@@ -175,13 +177,13 @@ public class DataDrivenTest2 {
 								driver.get("https://www.e-access.att.com/mobilecmpm/cmpm/#/time/timecard");
 							}else{
 								System.out.println("There is no thumb icon or there is no charge code or this code is non-construction");
-								Assert.assertEquals("3", "5");
+								// Assert.assertEquals("3", "5"); 
 							}
 						}
 					}
 				}
 			}
-		}*/
+		}
 		// Add missing code - End
 
 		
@@ -297,19 +299,23 @@ public class DataDrivenTest2 {
 		// Add working time - End
 	}
 
-	@BeforeMethod
+	
 	@BeforeMethod
 	public void setUp(ITestContext ctx) {
-		
+		System.setProperty("webdriver.chrome.driver", "browserDrivers/Chrome/chromedriver.exe");
+		driver = new ChromeDriver();
+		driver.manage().timeouts().implicitlyWait(7, TimeUnit.SECONDS);
+	}
+	
+	
+	// Run before executing a suite of test cases
+	@BeforeSuite
+	public void setUpBS(ITestContext ctx) {
 		// Ask for which week to add working item
 		System.out.println("Enter the week: ");
 		Scanner scanner = new Scanner(System.in);
 		String inputWeek = scanner.next();
 		ctx.getCurrentXmlTest().addParameter("inputWeek", inputWeek);
-		
-		System.setProperty("webdriver.chrome.driver", "browserDrivers/Chrome/chromedriver.exe");
-		driver = new ChromeDriver();
-		driver.manage().timeouts().implicitlyWait(7, TimeUnit.SECONDS);
 	}
 
 	@AfterMethod
@@ -330,9 +336,10 @@ public class DataDrivenTest2 {
 	}
 
 
-	@DataProvider(name = "calculatorTestData", parallel=true)
+/*	@DataProvider(name = "calculatorTestData",parallel=true)*/
+	@DataProvider(name = "calculatorTestData")
 	public Object[][] calculatorData() {
-		List<testing.DataDrivenTest2.calculator> testData = new ArrayList<testing.DataDrivenTest2.calculator>();
+		List<testing.Att.calculator> testData = new ArrayList<testing.Att.calculator>();
 
 		try {
 			String testDataFilePath = "TestData/Timesheet.xlsx";
@@ -458,7 +465,7 @@ public class DataDrivenTest2 {
 
 
 				}
-				testing.DataDrivenTest2.calculator _tmpCalc = new calculator(username, password, n01,  n02,  n03,  n04,  n05,  e01,  e02,  n06,  n07,  n08,  n09,  n10,  e03,  e04,  n11,  n12,  n13,  n14,  n15,  e05,  e06);
+				testing.Att.calculator _tmpCalc = new calculator(username, password, n01,  n02,  n03,  n04,  n05,  e01,  e02,  n06,  n07,  n08,  n09,  n10,  e03,  e04,  n11,  n12,  n13,  n14,  n15,  e05,  e06);
 
 				testData.add(_tmpCalc);
 			}
