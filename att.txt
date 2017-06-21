@@ -134,7 +134,10 @@ public class Att {
 					{
 						searchItem.findElement(By.xpath("./descendant::span[@title='Add']")).click();
 						driver.get("https://www.e-access.att.com/mobilecmpm/cmpm/#/time/timecard");
-					}else{
+					}else if(searchItem.findElement(By.xpath("./descendant::span[@title='Already Assigned']")).isDisplayed()){
+						driver.get("https://www.e-access.att.com/mobilecmpm/cmpm/#/time/timecard");
+					}
+					else{
 						System.out.println("There is no thumb icon or there is no charge code or this code is non-construction");
 						Assert.assertEquals("3", "5");
 					}
