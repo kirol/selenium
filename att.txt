@@ -99,7 +99,9 @@ public class Att {
 		enterTime.click();
 
 		// Add missing code - Start
-		Iterator chargeCodes = list.iterator();
+		/*Iterator chargeCodes = list.iterator();
+		
+		
 
 		while(chargeCodes.hasNext()){
 			List<WebElement> list_AMC = driver.findElements(By.xpath("//*[@class='ng-scope ng-isolate-scope']"));
@@ -110,39 +112,40 @@ public class Att {
 
 			// Initilize work item for first time user - start
 			while(true){
-			if(listOfWorkItems.hasNext()){
-				break;
-			}else{
-				System.out.println("NONONO");
-				try{
-					Actions actions_AMC = new Actions(driver);
-					actions_AMC.moveToElement(driver.findElement(By.xpath("//*[@class='cmpm-icon-menu-icon']")));
-					actions_AMC.click();
-					actions_AMC.moveToElement(driver.findElement(By.xpath("//*[text()='Add Work Item']")));
-					actions_AMC.click();
-					actions_AMC.build().perform();
-				}catch(org.openqa.selenium.StaleElementReferenceException e){
+				if(listOfWorkItems.hasNext()){
+					break;
+				}else{
+					System.out.println("NONONO");
+					try{
+						Actions actions_AMC = new Actions(driver);
+						actions_AMC.moveToElement(driver.findElement(By.xpath("//*[@class='cmpm-icon-menu-icon']")));
+						actions_AMC.click();
+						actions_AMC.moveToElement(driver.findElement(By.xpath("//*[text()='Add Work Item']")));
+						actions_AMC.click();
+						actions_AMC.build().perform();
+					}catch(org.openqa.selenium.StaleElementReferenceException e){
 
-				}
-				driver.findElement(By.xpath("//*[@class='ng-pristine ng-untouched ng-valid ng-valid-maxlength']")).sendKeys(iChargeCode);
-				driver.findElement(By.xpath("//*[@class='cmpm-button']")).click();
+					}
+					driver.findElement(By.xpath("//*[@class='ng-pristine ng-untouched ng-valid ng-valid-maxlength']")).sendKeys(iChargeCode);
+					driver.findElement(By.xpath("//*[@class='cmpm-button']")).click();
 
-				List<WebElement> searchItems = driver.findElements(By.xpath("//*[@class='webstr-time-work-items-actions ng-scope ng-isolate-scope']"));
-				for(WebElement searchItem : searchItems){
-					WebElement test = searchItem.findElement(By.xpath("./child::td[@class='webstr-time-rwd-table-cell-work-item webstr-time-rwd-table-auto-width-cell']"));
-					if(test.getAttribute("title").equals("Construction") && searchItem.findElement(By.xpath("./descendant::span[@title='Add']")).isDisplayed())
-					{
-						searchItem.findElement(By.xpath("./descendant::span[@title='Add']")).click();
-						driver.get("https://www.e-access.att.com/mobilecmpm/cmpm/#/time/timecard");
-					}else if(searchItem.findElement(By.xpath("./descendant::span[@title='Already Assigned']")).isDisplayed()){
-						driver.get("https://www.e-access.att.com/mobilecmpm/cmpm/#/time/timecard");
-					}
-					else{
-						System.out.println("There is no thumb icon or there is no charge code or this code is non-construction");
-						Assert.assertEquals("3", "5");
+					List<WebElement> searchItems = driver.findElements(By.xpath("//*[@class='webstr-time-work-items-actions ng-scope ng-isolate-scope']"));
+					for(WebElement searchItem : searchItems){
+						WebElement test = searchItem.findElement(By.xpath("./child::td[@class='webstr-time-rwd-table-cell-work-item webstr-time-rwd-table-auto-width-cell']"));
+						if(test.getAttribute("title").equals("Construction") && searchItem.findElement(By.xpath("./descendant::span[@title='Add']")).isDisplayed())
+						{
+							searchItem.findElement(By.xpath("./descendant::span[@title='Add']")).click();
+							driver.get("https://www.e-access.att.com/mobilecmpm/cmpm/#/time/timecard");
+						}else if(searchItem.findElement(By.xpath("./descendant::span[@title='Already Assigned']")).isDisplayed()){
+							driver.get("https://www.e-access.att.com/mobilecmpm/cmpm/#/time/timecard");
+						}
+						else{
+							System.out.println("There is no thumb icon or there is no charge code or this code is non-construction");
+							// Create error code to print screenshot
+							Assert.assertEquals("3", "5");
+						}
 					}
 				}
-			}
 			}
 			// Initilize work item for first time user - end
 
@@ -186,18 +189,18 @@ public class Att {
 					}
 				}
 			}
-		}
+		}*/
 		// Add missing code - End
 
-		
-		
+
+
 
 		// Add working time - Start 
 		try{
 			Thread.sleep(5000);
-			
-			
-			
+
+
+
 			// Change week 
 			String inputWeek = ctx.getCurrentXmlTest().getParameter("inputWeek");
 			driver.findElement(By.xpath("//*[text()='"+inputWeek+"']")).sendKeys(Keys.ENTER);
@@ -206,32 +209,32 @@ public class Att {
 
 			// Remove values in every work items fields
 			try{
-			List<WebElement> elements = driver.findElements(By.xpath("//*[@class='inline-edit-input-margin ng-pristine ng-untouched ng-valid ng-valid-pattern ng-valid-maxlength']"));
-			for ( WebElement we: elements) { 
-				if(we.isDisplayed()){
-				we.sendKeys(Keys.chord(Keys.CONTROL,"a"), "0");
+				List<WebElement> elements = driver.findElements(By.xpath("//*[@class='inline-edit-input-margin ng-pristine ng-untouched ng-valid ng-valid-pattern ng-valid-maxlength']"));
+				for ( WebElement we: elements) { 
+					if(we.isDisplayed()){
+						we.sendKeys(Keys.chord(Keys.CONTROL,"a"), "0");
+					}
+				}}catch(Exception e){
+
 				}
-			}}catch(Exception e){
-				
-			}
 
 			// Calculate maximum empty REG on one row
 			int maxCounter = 0;
 			try{
-			
-			WebElement oneRow = driver.findElement(By.xpath("//*[@class='ng-scope ng-isolate-scope']"));
-			List<WebElement> abc = oneRow.findElements(By.xpath("./descendant::*[@title='Enter REG hours']/child::*"));
-			for(WebElement abcwe : abc){
-				if(abcwe.isDisplayed()){
-					
-					maxCounter +=1;
+
+				WebElement oneRow = driver.findElement(By.xpath("//*[@class='ng-scope ng-isolate-scope']"));
+				List<WebElement> abc = oneRow.findElements(By.xpath("./descendant::*[@title='Enter REG hours']/child::*"));
+				for(WebElement abcwe : abc){
+					if(abcwe.isDisplayed()){
+
+						maxCounter +=1;
+					}
+				}}catch(Exception e){
+					e.printStackTrace();
 				}
-			}}catch(Exception e){
-				e.printStackTrace();
-			}
-			
-			
-			// 1 row of work items
+
+
+			// 1 row of work items on website
 			List<WebElement> workItems = driver.findElements(By.xpath("//*[@class='ng-scope ng-isolate-scope']"));
 
 			List<WebElement> li = null;
@@ -239,7 +242,7 @@ public class Att {
 			JSONObject obj = new JSONObject();
 			Iterator iter00 = list02.iterator();
 			int counterFrom1To5;
-			
+
 			// In this website, week 1 begins with counter from 0, other weeks (2,3,4,5) begins with counter from 1
 			if(inputWeek.equals("1")){
 				counterFrom1To5 = 0;
@@ -247,7 +250,7 @@ public class Att {
 				counterFrom1To5 = 1;
 				maxCounter +=1;
 			}
-			
+
 			// flag is used to break from two loops
 			masterloop:
 				// Loop through each excel cell
@@ -257,8 +260,9 @@ public class Att {
 
 
 					Iterator iter = workItems.iterator();
-					// Loop through each row
+					// Loop through each row on website
 					while(iter.hasNext()){
+						
 						WebElement we = (WebElement) iter.next();
 						// Charge code on website
 						WebElement workItem = we.findElement(By.xpath("./child::*[@class='webstr-time-rwd-table-cell-pmt webstr-time-rwd-table-auto-width-cell']"));
@@ -267,14 +271,17 @@ public class Att {
 							driver.findElement(By.xpath("//*[@title='Toggle inline editing']")).click();
 							break masterloop;
 						}
-						System.out.println(i);
+						System.out.println("Current code is: " + i);
 
 						// If i (a cell in excel file) equals to current row 's charge code
-						if(i.equals(workItem.getAttribute("title"))){
+						if(i.equals(workItem.getAttribute("title")))
+						{
 							li =  we.findElements(By.xpath("./descendant::*[@title='Enter REG hours']/child::*"));
-							
-							if(obj.containsKey(i)){
-							}else{
+
+							if(obj.containsKey(i))
+							{
+							}else
+							{
 								obj.put(i, li);
 
 							}
@@ -284,15 +291,20 @@ public class Att {
 							li = (List<WebElement>) obj.get(i);
 							li.get(counterFrom1To5).sendKeys(Keys.chord(Keys.CONTROL,"a"), "8");
 
-					
+
 							System.out.println("Current counter is: " + counterFrom1To5);
 							counterFrom1To5+=1;
 							break;
-						}else if(i.equals("0")){
+						}
+						else if(i.equals("0")){
 							System.out.println("Do nothing");
-
 							counterFrom1To5+=1;
 							break;
+						}else{
+							if(iter.hasNext()){
+							}else{
+								Assert.assertEquals("3", "5"); // create error to print screenshot
+							}
 						}
 					}
 				}
@@ -302,15 +314,15 @@ public class Att {
 		// Add working time - End
 	}
 
-	
+
 	@BeforeMethod
 	public void setUp(ITestContext ctx) {
 		System.setProperty("webdriver.chrome.driver", "browserDrivers/Chrome/chromedriver.exe");
 		driver = new ChromeDriver();
 		driver.manage().timeouts().implicitlyWait(7, TimeUnit.SECONDS);
 	}
-	
-	
+
+
 	// Run before executing a suite of test cases
 	@BeforeSuite
 	public void setUpBS(ITestContext ctx) {
@@ -325,13 +337,13 @@ public class Att {
 	public void takeScreenShotOnFailure(ITestResult testResult, ITestContext ctx) throws IOException {
 		if (testResult.getStatus() == ITestResult.FAILURE) {
 			File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-			FileUtils.copyFile(scrFile, new File("TestData/" + ctx.getCurrentXmlTest().getParameter("param1") + " - FAILED.jpg"));
+			FileUtils.copyFile(scrFile, new File("TestData/Failed/" + ctx.getCurrentXmlTest().getParameter("param1") + " - FAILED.jpg"));
 
 		}    
 
 		else if (testResult.getStatus() == ITestResult.SUCCESS) {
 			File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-			FileUtils.copyFile(scrFile, new File("TestData/" + ctx.getCurrentXmlTest().getParameter("param1") + " - SUCCESS.jpg"));
+			FileUtils.copyFile(scrFile, new File("TestData/Success/" + ctx.getCurrentXmlTest().getParameter("param1") + " - SUCCESS.jpg"));
 
 		}    
 		driver.close();
@@ -339,7 +351,7 @@ public class Att {
 	}
 
 
-/*	@DataProvider(name = "calculatorTestData",parallel=true)*/
+	/*	@DataProvider(name = "calculatorTestData",parallel=true)*/
 	@DataProvider(name = "calculatorTestData")
 	public Object[][] calculatorData() {
 		List<testing.Att.calculator> testData = new ArrayList<testing.Att.calculator>();
