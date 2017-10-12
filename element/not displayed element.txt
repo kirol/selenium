@@ -1,0 +1,10 @@
+List<WebElement> elements = driver.findElements(By.xpath("//*[@id='li_myaccount']"));
+				
+				
+				for ( WebElement we: elements) { 
+					if (we.isDisplayed())
+			        {
+			            System.out.println(we);
+			            we.click();
+			        }
+				    }

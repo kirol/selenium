@@ -1,0 +1,9 @@
+Add seleniumquery-0.16.0.jar to project
+FAQ: https://github.com/seleniumQuery/seleniumQuery
+
+// set jquery selenium up
+$.driver().use(driver);							
+
+WebElement existingWebElement = driver.findElement(By.id("li_myaccount"));
+$(existingWebElement).attr("class","open");
+		 
